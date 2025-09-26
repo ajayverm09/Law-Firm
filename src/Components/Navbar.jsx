@@ -47,9 +47,13 @@ const Navbar = () => {
     >
       {/* Logo Section */}
       <div className="flex items-center animate-fadeIn">
-        <h1 className="text-2xl md:text-3xl font-serif font-bold text-[#78615E] tracking-tight">
+        <Link 
+          to="/" 
+          className="text-2xl md:text-3xl font-serif font-bold text-[#78615E] tracking-tight hover:text-[#363544] transition-colors duration-300"
+          onClick={() => handleLinkClick('Homepage')}
+        >
           N.K. Verma & Ass.
-        </h1>
+        </Link>
       </div>
 
       {/* Desktop Navigation Links */}

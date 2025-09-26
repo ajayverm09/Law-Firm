@@ -18,7 +18,9 @@ const Footer = () => {
           <div className="lg:col-span-2 animate-fadeInUp">
             <div className="flex items-center mb-3">
               <FaGavel className="text-[#B9A38F] text-xl md:text-2xl mr-2" />
+              <a href='/'>
               <h2 className="text-xl md:text-2xl font-serif font-bold">NK Verma Associates</h2>
+              </a>
             </div>
             <p className="text-gray-300 mb-4 text-sm md:text-base max-w-lg">
               Providing expert legal services with integrity and professionalism. Our team of experienced lawyers is committed to delivering the best possible outcomes for our clients.
