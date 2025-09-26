@@ -6,11 +6,19 @@ const TeamSection = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [animationPlayed, setAnimationPlayed] = useState(false);
   const sliderRef = useRef(null);
   
   useEffect(() => {
     // Trigger animation after component mounts
     setIsVisible(true);
+    
+    // Mark animation as played after initial animations complete
+    const timer = setTimeout(() => {
+      setAnimationPlayed(true);
+    }, 1500); // Enough time for all staggered animations to complete
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const teamMembers = [
@@ -95,69 +103,74 @@ const TeamSection = () => {
     sliderRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  const TeamMemberCard = ({ member, index, isMobile = false }) => (
-    <div 
-      className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl group animate-staggeredFadeIn flex-shrink-0 ${isMobile ? 'w-full' : 'w-80'}`}
-      style={{ animationDelay: `${0.5 + index * 0.1}s` }}
-    >
-      {/* Member Image with Overlay */}
-      <div className="h-40 md:h-48 lg:h-56 relative overflow-hidden">
-        <img 
-          src={member.image} 
-          alt={member.name} 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-        
-        {/* Gradient Overlay (appears on hover from top) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
-          {/* Top Content (Expertise and Social Links) */}
-          <div className="p-3 md:p-4">
-            {/* Expertise */}
-            <div className="mb-3 md:mb-4">
-              <span className="text-xs font-semibold text-white uppercase tracking-wider">Expertise:</span>
-              <p className="text-white font-medium mt-1 text-xs md:text-sm">{member.expertise}</p>
-            </div>
-            
-            {/* Social Links */}
-            <div className="flex space-x-2">
-              <a 
-                href={member.linkedin}
-                className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#B9A38F] transition-all duration-300 transform hover:scale-110"
-                aria-label={`${member.name} LinkedIn`}
-              >
-                <FaLinkedinIn className="text-xs md:text-sm" />
-              </a>
-              <a 
-                href={member.twitter}
-                className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#B9A38F] transition-all duration-300 transform hover:scale-110"
-                aria-label={`${member.name} Twitter`}
-              >
-                <FaTwitter className="text-xs md:text-sm" />
-              </a>
-              <a 
-                href={member.instagram}
-                className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#B9A38F] transition-all duration-300 transform hover:scale-110"
-                aria-label={`${member.name} Instagram`}
-              >
-                <FaInstagram className="text-xs md:text-sm" />
-              </a>
+  const TeamMemberCard = ({ member, index, isMobile = false }) => {
+    // Only apply animation on initial load, not during scrolling
+    const shouldAnimate = !isMobile || (isMobile && !animationPlayed);
+    
+    return (
+      <div 
+        className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl group flex-shrink-0 ${isMobile ? 'w-full' : 'w-80'} ${shouldAnimate ? 'animate-staggeredFadeIn' : ''}`}
+        style={{ animationDelay: shouldAnimate ? `${0.5 + index * 0.1}s` : '0s' }}
+      >
+        {/* Member Image with Overlay */}
+        <div className="h-40 md:h-48 lg:h-56 relative overflow-hidden">
+          <img 
+            src={member.image} 
+            alt={member.name} 
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          
+          {/* Gradient Overlay (appears on hover from top) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
+            {/* Top Content (Expertise and Social Links) */}
+            <div className="p-3 md:p-4">
+              {/* Expertise */}
+              <div className="mb-3 md:mb-4">
+                <span className="text-xs font-semibold text-white uppercase tracking-wider">Expertise:</span>
+                <p className="text-white font-medium mt-1 text-xs md:text-sm">{member.expertise}</p>
+              </div>
+              
+              {/* Social Links */}
+              <div className="flex space-x-2">
+                <a 
+                  href={member.linkedin}
+                  className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#B9A38F] transition-all duration-300 transform hover:scale-110"
+                  aria-label={`${member.name} LinkedIn`}
+                >
+                  <FaLinkedinIn className="text-xs md:text-sm" />
+                </a>
+                <a 
+                  href={member.twitter}
+                  className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#B9A38F] transition-all duration-300 transform hover:scale-110"
+                  aria-label={`${member.name} Twitter`}
+                >
+                  <FaTwitter className="text-xs md:text-sm" />
+                </a>
+                <a 
+                  href={member.instagram}
+                  className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#B9A38F] transition-all duration-300 transform hover:scale-110"
+                  aria-label={`${member.name} Instagram`}
+                >
+                  <FaInstagram className="text-xs md:text-sm" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
+        
+        {/* Member Info (Name and Position) */}
+        <div className="p-3 md:p-4 pb-1">
+          <h3 className="text-base md:text-lg font-bold text-gray-800">{member.name}</h3>
+          <p className="text-[#B9A38F] font-medium text-xs md:text-sm">{member.position}</p>
+        </div>
+        
+        {/* Member Bio (always visible) */}
+        <div className="p-3 md:p-4 pt-1">
+          <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{member.bio}</p>
+        </div>
       </div>
-      
-      {/* Member Info (Name and Position) */}
-      <div className="p-3 md:p-4 pb-1">
-        <h3 className="text-base md:text-lg font-bold text-gray-800">{member.name}</h3>
-        <p className="text-[#B9A38F] font-medium text-xs md:text-sm">{member.position}</p>
-      </div>
-      
-      {/* Member Bio (always visible) */}
-      <div className="p-3 md:p-4 pt-1">
-        <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{member.bio}</p>
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <section className="py-8 md:py-10 lg:py-12 overflow-hidden bg-white">
