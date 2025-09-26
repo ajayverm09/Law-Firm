@@ -197,6 +197,17 @@ const BlogSingle = () => {
           </div>
         </div>
         
+        {/* Back to All Articles Button above Related Articles */}
+        <div className="mt-8 text-center animate-fadeInUp animation-delay-1100">
+          <Link 
+            to="/blogs" 
+            className="inline-flex items-center px-6 py-3 bg-[#363544] text-white font-medium rounded-lg hover:bg-[#2a2933] transition-all duration-300 transform hover:scale-105"
+          >
+            <FaArrowLeft className="mr-2" />
+            Back to All Articles
+          </Link>
+        </div>
+        
         {/* Related Articles */}
         {relatedBlogs.length > 0 && (
           <div className="mt-10 md:mt-12 animate-fadeInUp animation-delay-1200">
@@ -426,6 +437,10 @@ const BlogSingle = () => {
         
         .animation-delay-1000 {
           animation-delay: 1s;
+        }
+        
+        .animation-delay-1100 {
+          animation-delay: 1.1s;
         }
         
         .animation-delay-1200 {

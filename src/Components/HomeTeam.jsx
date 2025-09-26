@@ -95,9 +95,9 @@ const TeamSection = () => {
     sliderRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  const TeamMemberCard = ({ member, index }) => (
+  const TeamMemberCard = ({ member, index, isMobile = false }) => (
     <div 
-      className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl group animate-staggeredFadeIn flex-shrink-0 w-80"
+      className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl group animate-staggeredFadeIn flex-shrink-0 ${isMobile ? 'w-full' : 'w-80'}`}
       style={{ animationDelay: `${0.5 + index * 0.1}s` }}
     >
       {/* Member Image with Overlay */}
@@ -178,7 +178,7 @@ const TeamSection = () => {
         <div className="sm:hidden relative mb-8">
           <div 
             ref={sliderRef}
-            className="flex overflow-x-auto scrollbar-hide space-x-4 py-2"
+            className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2"
             onMouseDown={handleMouseDown}
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}
@@ -192,7 +192,9 @@ const TeamSection = () => {
             }}
           >
             {teamMembers.map((member, index) => (
-              <TeamMemberCard key={member.id} member={member} index={index} />
+              <div key={member.id} className="flex-shrink-0 w-full snap-center px-1">
+                <TeamMemberCard member={member} index={index} isMobile={true} />
+              </div>
             ))}
           </div>
           
