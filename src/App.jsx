@@ -8,6 +8,7 @@ import About from './Pages/About'
 import Contact from './Pages/Contact'
 import Blogs from './Pages/Blogs'
 import BlogSingle from './Pages/SingleBlog'
+import ScrollToTop from './Components/ScrollToTop'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
     <>
       <div className=''>
         <BrowserRouter>
+        <ScrollToTop/>
         <Navbar/>
         <Routes>
           <Route path='/' element={<Home/>}/>
